@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.template import Context, loader
-from .fbgraph import facebook
 from .manager import usermanager
 
 
@@ -21,6 +20,8 @@ def user(request, uid):
     return HttpResponse(template.render(context, request))
 
 
-def revoke_access(request):
-    pass
+def deregister(request):
+    payload = request.POST['signed_request']
+    usermanager.deactivate_user(payload)
+    return HttpResponse('OK')
 

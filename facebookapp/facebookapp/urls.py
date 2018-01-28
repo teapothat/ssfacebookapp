@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^login/', views.login),
     url(r'^logout/', views.logout),
     url(r'^user/(\d+)', views.user),
+    url(r'^deregister', views.deregister)
 
 ]
 

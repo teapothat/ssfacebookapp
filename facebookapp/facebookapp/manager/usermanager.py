@@ -2,15 +2,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from facebookapp.models import User
 from facebookapp.fbgraph import facebook
 
-def handle_user(uid, temp_token):
 
+def handle_user(uid, temp_token):
     # Check if user exists in db
     user = get_user_by_fb_id(uid)
     if not user:
         user = create_user_with_temp_token(uid, temp_token)
-
     link = facebook.get_picture_url(uid, user.access_token),
-
     return {"user_name": user.name, "image_link": link}
 
 
@@ -31,3 +29,15 @@ def create_user_with_temp_token(uid, temp_token):
                 is_active=True)
     user.save()
     return user
+
+
+def deactivate_user(input):
+    uid = facebook.parse_signed_request(input)['user_id']
+    user = get_user_by_fb_id(uid)
+    user.is_active = False
+    user.save()
+
+
+
+
+
