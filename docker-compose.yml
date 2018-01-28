@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_DATABASE: facebookapp
+      MYSQL_USER: django
+      MYSQL_PASSWORD: docker
+    networks:
+      - facebookapp
+
+  facebookapp:
+    build: facebookapp/
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./facebookapp:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - facebookapp
+    environment:
+     - PYTHONUNBUFFERED=1
+
+
+networks:
+  facebookapp:
+    driver: bridge
